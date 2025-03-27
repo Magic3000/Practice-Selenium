@@ -4,6 +4,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.magic3000.practice1.helpers.CustomerDataGenerator;
 import ru.magic3000.practice1.pages.AddCustomerPage;
@@ -14,10 +15,10 @@ import ru.magic3000.practice1.pages.CustomersPage;
 public class AddCustomerTest extends BaseTest {
     private AddCustomerPage addCustomerPage;
 
-    @BeforeClass
+    @BeforeMethod
     public void init() {
         managerPage.clickAddCustomer();
-        addCustomerPage = new AddCustomerPage(getDriver());
+        addCustomerPage = new AddCustomerPage(getDriver(), getDriverWait());
     }
 
     /**
@@ -30,7 +31,7 @@ public class AddCustomerTest extends BaseTest {
         addCustomerPage.addCustomer();
 
         managerPage.clickCustomers();
-        CustomersPage customersPage = new CustomersPage(getDriver());
+        CustomersPage customersPage = new CustomersPage(getDriver(), getDriverWait());
         customersPage.deleteCustomerByFirstName(CustomerDataGenerator.cachedFirstName);
     }
 

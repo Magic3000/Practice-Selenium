@@ -3,6 +3,7 @@ package ru.magic3000.practice1.tests;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -14,6 +15,7 @@ import java.time.Duration;
 
 public class BaseTest {
     private final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+    private final ThreadLocal<WebDriverWait> driverWait = new ThreadLocal<>();
     ManagerPage managerPage;
 
     /**
@@ -42,7 +44,7 @@ public class BaseTest {
 
         String webUrl = PropertyProvider.getInstance().getProperty("web.url");
         getDriver().get(webUrl);
-        managerPage = new ManagerPage(getDriver());
+        managerPage = new ManagerPage(getDriver(), getDriverWait());
     }
 
     public WebDriver getDriver() {
@@ -55,6 +57,14 @@ public class BaseTest {
                     .addArguments("--no-sandbox")));
         }
         return driver.get();
+    }
+
+    public WebDriverWait getDriverWait() {
+        if (driverWait.get() == null) {
+            driverWait.set(new WebDriverWait(getDriver(),
+                    Duration.ofSeconds(Integer.parseInt(PropertyProvider.getInstance().getProperty("wait.timeout")))));
+        }
+        return driverWait.get();
     }
 
     /**

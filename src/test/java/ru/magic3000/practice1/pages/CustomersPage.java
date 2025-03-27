@@ -21,6 +21,7 @@ import static ru.magic3000.practice1.helpers.Wait.waitUntilVisible;
 
 public class CustomersPage {
     final WebDriver driver;
+    final WebDriverWait driverWait;
 
     @FindBy(xpath = "//a[contains(text(), 'First Name')]")
     WebElement sortByFirstNameButton;
@@ -31,14 +32,15 @@ public class CustomersPage {
     @FindBy(css = "div.marTop")
     WebElement customersContainer;
 
-    public CustomersPage(WebDriver webDriver) {
+    public CustomersPage(WebDriver webDriver, WebDriverWait webDriverWait) {
         driver = webDriver;
+        driverWait = webDriverWait;
         PageFactory.initElements(driver, this);
     }
 
     @Step("Click sort customers by name button")
     public void clickSortCustomersByFirstName() {
-        waitThenClick(driver, sortByFirstNameButton);
+        waitThenClick(driverWait, sortByFirstNameButton);
     }
 
     List<String> getCustomerNames() {
@@ -99,7 +101,7 @@ public class CustomersPage {
 
     @Step("Get customer with name length closest to average name length from customers list")
     public String getCustomerWithAverageNameLength() {
-        waitUntilVisible(driver, customersContainer);
+        waitUntilVisible(driverWait, customersContainer);
         List<String> customers = getCustomerNames();
 
         OptionalDouble avgLen = customers.stream().mapToInt(String::length).average();

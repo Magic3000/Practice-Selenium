@@ -15,7 +15,7 @@ public class SortCustomersTest extends BaseTest {
     @BeforeClass
     public void init() {
         managerPage.clickCustomers();
-        customersPage = new CustomersPage(getDriver());
+        customersPage = new CustomersPage(getDriver(), getDriverWait());
     }
 
     /**

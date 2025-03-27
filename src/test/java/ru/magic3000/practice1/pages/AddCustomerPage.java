@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import ru.magic3000.practice1.helpers.CustomerDataGenerator;
 
@@ -13,6 +14,7 @@ import static ru.magic3000.practice1.helpers.Wait.*;
 
 public class AddCustomerPage {
     final WebDriver driver;
+    final WebDriverWait driverWait;
 
     @FindBy(xpath = "//input[@ng-model='fName']")
     WebElement firstNameField;
@@ -26,20 +28,21 @@ public class AddCustomerPage {
     @FindBy(css = "button.btn.btn-default")
     WebElement addCustomerButton;
 
-    public AddCustomerPage(WebDriver webDriver)
+    public AddCustomerPage(WebDriver webDriver, WebDriverWait webDriverWait)
     {
         driver = webDriver;
+        driverWait = webDriverWait;
         PageFactory.initElements(driver, this);
     }
 
     @Step("Click add customer button")
     public void clickAddCustomer() {
-        waitThenClick(driver, addCustomerButton);
+        waitThenClick(driverWait, addCustomerButton);
     }
 
     @Step("Accept alert with successfully added customer")
     public void clickAlert() {
-        waitUntilAlertIsPresent(driver);
+        waitUntilAlertIsPresent(driverWait);
 
         Alert alert = driver.switchTo().alert();
         Assert.assertTrue(alert.getText().contains("Customer added successfully with customer id"), "Alert message isn't wat was expected.");
@@ -48,7 +51,7 @@ public class AddCustomerPage {
 
     @Step("Check for error message under first name input field in case name is empty")
     public void checkError() {
-        waitUntilVisible(driver, firstNameField);
+        waitUntilVisible(driverWait, firstNameField);
         String validationMessage = firstNameField.getAttribute("validationMessage");
 
         assert validationMessage != null;
@@ -62,9 +65,9 @@ public class AddCustomerPage {
     public void clearEnteredDataIfPresent() {
         if (firstNameField == null)
             return;
-        waitUntilVisible(driver, firstNameField);
-        waitUntilVisible(driver, lastNameField);
-        waitUntilVisible(driver, postCodeField);
+        waitUntilVisible(driverWait, firstNameField);
+        waitUntilVisible(driverWait, lastNameField);
+        waitUntilVisible(driverWait, postCodeField);
 
         if (!firstNameField.getAttribute("value").isEmpty())
             firstNameField.clear();
@@ -76,9 +79,9 @@ public class AddCustomerPage {
 
     @Step("Enter customer data in fields while creating")
     public void customerDataInput(String fName, String lName, String postCode) {
-        waitUntilVisible(driver, firstNameField);
-        waitUntilVisible(driver, lastNameField);
-        waitUntilVisible(driver, postCodeField);
+        waitUntilVisible(driverWait, firstNameField);
+        waitUntilVisible(driverWait, lastNameField);
+        waitUntilVisible(driverWait, postCodeField);
 
         firstNameField.sendKeys(fName);
         lastNameField.sendKeys(lName);
