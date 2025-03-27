@@ -29,7 +29,9 @@ public class BaseTest {
             case "chrome" -> driver.set(new ChromeDriver(new ChromeOptions()
                     .addArguments("--remote-allow-origins=*")
                     .addArguments("--disable-gpu")
-                    .addArguments("--start-maximized")));
+                    .addArguments("--start-maximized")
+                    .addArguments("--headless")
+                    .addArguments("--no-sandbox")));
             default -> throw new IllegalStateException("Unexpected value: "
                     + browserName);
         }
