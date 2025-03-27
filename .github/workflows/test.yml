@@ -27,7 +27,7 @@ jobs:
         run: mvn clean test
 
       - name: Upload Allure results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact
         with:
           name: allure-results
           path: allure-results
