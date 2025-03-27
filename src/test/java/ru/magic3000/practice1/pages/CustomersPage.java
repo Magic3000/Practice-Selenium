@@ -44,6 +44,8 @@ public class CustomersPage {
     }
 
     List<String> getCustomerNames() {
+        nameElements.forEach(webElement -> waitUntilVisible(driverWait, webElement));
+
         Set<String> customerNames = new HashSet<>();
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
