@@ -13,15 +13,11 @@ import ru.magic3000.practice1.pages.CustomersPage;
 @Feature("Adding customer")
 public class AddCustomerTest extends BaseTest {
     private AddCustomerPage addCustomerPage;
-    private CustomersPage customersPage;
 
     @BeforeClass
     public void init() {
         managerPage.clickAddCustomer();
         addCustomerPage = new AddCustomerPage(getDriver());
-
-        managerPage.clickCustomers();
-        customersPage = new CustomersPage(getDriver());
     }
 
     /**
@@ -30,10 +26,11 @@ public class AddCustomerTest extends BaseTest {
     @Test(description = "Add Customer Test")
     @Description("Add customer with random data and delete it")
     public void AddCustomer() {
-        managerPage.clickAddCustomer();
         addCustomerPage.enterCustomerData();
         addCustomerPage.addCustomer();
 
+        managerPage.clickCustomers();
+        CustomersPage customersPage = new CustomersPage(getDriver());
         customersPage.deleteCustomerByFirstName(CustomerDataGenerator.cachedFirstName);
     }
 
