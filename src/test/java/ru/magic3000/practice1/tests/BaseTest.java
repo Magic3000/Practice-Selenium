@@ -46,6 +46,14 @@ public class BaseTest {
     }
 
     public WebDriver getDriver() {
+        if (driver.get() == null) {
+            driver.set(new ChromeDriver(new ChromeOptions()
+                    .addArguments("--remote-allow-origins=*")
+                    .addArguments("--disable-gpu")
+                    .addArguments("--start-maximized")
+                    .addArguments("--headless")
+                    .addArguments("--no-sandbox")));
+        }
         return driver.get();
     }
 
@@ -54,15 +62,10 @@ public class BaseTest {
      */
     @AfterClass(alwaysRun = true)
     public final void tearDown() {
-        if (getDriver() != null) {
-            try {
-                getDriver().quit();
-            } catch (Exception e) {
-                System.out.println("tearDown exception: ");
-                e.printStackTrace();
-            } finally {
-                driver.remove();
-            }
+        WebDriver webDriver = driver.get();
+        if (webDriver != null) {
+            webDriver.quit();
+            driver.remove();
         }
     }
 }
