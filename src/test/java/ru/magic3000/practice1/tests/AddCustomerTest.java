@@ -3,7 +3,6 @@ package ru.magic3000.practice1.tests;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.magic3000.practice1.helpers.CustomerDataGenerator;
