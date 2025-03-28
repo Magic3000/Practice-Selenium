@@ -26,12 +26,14 @@ public class ManagerPage {
     }
 
     @Step("Open add customer page")
-    public void clickAddCustomer(){
+    public AddCustomerPage clickAddCustomer(){
         waitThenClick(driverWait, addCustomerButton);
+        return new AddCustomerPage(driver, driverWait);
     }
 
     @Step("Open customers page")
-    public void clickCustomers() {
+    public CustomersPage clickCustomers() {
         waitThenClick(driverWait, customersButton);
+        return new CustomersPage(driver, driverWait);
     }
 }

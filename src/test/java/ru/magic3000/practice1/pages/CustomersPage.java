@@ -13,7 +13,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.OptionalDouble;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static ru.magic3000.practice1.helpers.Wait.waitThenClick;
@@ -95,12 +100,6 @@ public class CustomersPage {
                 Assert.assertNotEquals(removedCustomerName, customerName));
     }
 
-    @Step("Print all customers name and name length from customers list")
-    public void printCustomerNames(List<String> customers) {
-        customers.forEach(customerName ->
-                System.out.println("Customer name: " + customerName + " name length: " + customerName.length()));
-    }
-
     @Step("Get customer with name length closest to average name length from customers list")
     public String getCustomerWithAverageNameLength() {
         waitUntilVisible(driverWait, customersContainer);
@@ -112,7 +111,6 @@ public class CustomersPage {
                 .orElse(null);
 
         System.out.println("Customer with average closest name: " + avgName);
-        printCustomerNames(customers);
         return avgName;
     }
 

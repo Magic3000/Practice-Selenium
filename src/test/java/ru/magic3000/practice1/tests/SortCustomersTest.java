@@ -14,8 +14,7 @@ public class SortCustomersTest extends BaseTest {
 
     @BeforeClass
     public void init() {
-        managerPage.clickCustomers();
-        customersPage = new CustomersPage(getDriver(), getDriverWait());
+        customersPage = managerPage.clickCustomers();
     }
 
     /**
@@ -23,7 +22,7 @@ public class SortCustomersTest extends BaseTest {
      */
     @Test(description = "Sort Customers Test")
     @Description("Sort customers and print result")
-    public void SortCustomers() throws InterruptedException {
+    public void SortCustomers() {
         customersPage.clickSortCustomersByFirstName();
         customersPage.saveSortedCustomers();
     }

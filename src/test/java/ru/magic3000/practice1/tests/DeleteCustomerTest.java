@@ -14,8 +14,7 @@ public class DeleteCustomerTest extends BaseTest {
 
     @BeforeClass
     public void init() {
-        managerPage.clickCustomers();
-        customersPage = new CustomersPage(getDriver(), getDriverWait());
+        customersPage = managerPage.clickCustomers();
     }
 
     /**

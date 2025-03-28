@@ -16,8 +16,7 @@ public class AddCustomerTest extends BaseTest {
 
     @BeforeMethod
     public void init() {
-        managerPage.clickAddCustomer();
-        addCustomerPage = new AddCustomerPage(getDriver(), getDriverWait());
+        addCustomerPage = managerPage.clickAddCustomer();
     }
 
     /**
@@ -29,8 +28,7 @@ public class AddCustomerTest extends BaseTest {
         addCustomerPage.enterCustomerData();
         addCustomerPage.addCustomer();
 
-        managerPage.clickCustomers();
-        CustomersPage customersPage = new CustomersPage(getDriver(), getDriverWait());
+        CustomersPage customersPage = managerPage.clickCustomers();
         customersPage.deleteCustomerByFirstName(CustomerDataGenerator.cachedFirstName);
     }
 
