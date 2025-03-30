@@ -10,15 +10,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.OptionalDouble;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static ru.magic3000.practice1.helpers.Wait.waitThenClick;
@@ -48,10 +45,12 @@ public class CustomersPage {
         waitThenClick(driverWait, sortByFirstNameButton);
     }
 
-    List<String> getCustomerNames() {
-        nameElements.forEach(webElement -> waitUntilVisible(driverWait, webElement));
+    @Step("Get a list of customer names")
+    public List<String> getCustomerNames() {
+        waitUntilVisible(driverWait, sortByFirstNameButton);
+        //nameElements.forEach(webElement -> waitUntilVisible(driverWait, webElement));
 
-        Set<String> customerNames = new HashSet<>();
+        List<String> customerNames = new ArrayList<>();
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
         AtomicLong lastHeight = new AtomicLong((long)jsExecutor.executeScript("return arguments[0].scrollHeight", customersContainer));
@@ -59,7 +58,10 @@ public class CustomersPage {
         int attempts = 0;
         while (attempts < 2) {
             int previousSize = customerNames.size();
-            nameElements.forEach(element -> customerNames.add(element.getText()));
+            nameElements.forEach(element -> {
+                if (!customerNames.contains(element.getText()))
+                    customerNames.add(element.getText());
+            });
             jsExecutor.executeScript("arguments[0].scrollTop = arguments[0].scrollHeight", customersContainer);
 
             try {
@@ -75,7 +77,6 @@ public class CustomersPage {
                     attempts++;
                 }
             } catch (TimeoutException e) {
-                System.out.println("Timeout: scrolling doesn't affect height");
                 break;
             }
         }
@@ -83,21 +84,12 @@ public class CustomersPage {
         return new ArrayList<>(customerNames);
     }
 
+    @Step("Delete customer with first name: {fName}")
     public void deleteCustomerByFirstName(String fName) {
         List<String> customers = getCustomerNames();
-        if (customers.isEmpty()) {
-            System.out.println("Customers not found");
-        } else {
+        if (!customers.isEmpty()) {
             driver.findElement(By.xpath("//td[text()='" + fName + "']/following-sibling::td/button")).click();
-            System.out.println("Customer deleted: " + fName);
         }
-    }
-
-    @Step("Check if customer present in customers list")
-    public void checkCustomerPresent(String removedCustomerName) {
-        List<String> customers = getCustomerNames();
-        customers.forEach(customerName ->
-                Assert.assertNotEquals(removedCustomerName, customerName));
     }
 
     @Step("Get customer with name length closest to average name length from customers list")
@@ -106,14 +98,12 @@ public class CustomersPage {
         List<String> customers = getCustomerNames();
 
         OptionalDouble avgLen = customers.stream().mapToInt(String::length).average();
-        String avgName = customers.stream()
+        return customers.stream()
                 .min(Comparator.comparingDouble(a -> Math.abs(a.length() - avgLen.orElse(0))))
                 .orElse(null);
-
-        System.out.println("Customer with average closest name: " + avgName);
-        return avgName;
     }
 
+    @Step("Add sorted customer names to allure report")
     public void saveSortedCustomers() {
         List<String> customers = getCustomerNames();
         Allure.addAttachment("Sorted customer names: ", String.join(", ", customers));

@@ -25,6 +25,7 @@ public class BaseTest {
     public void init(final ITestContext context) {
         String browserName = PropertyProvider.getInstance().getProperty("browser.name");
         int pageLoadTimeout = Integer.parseInt(PropertyProvider.getInstance().getProperty("page.load.timeout"));
+        int implicitlyWait = Integer.parseInt(PropertyProvider.getInstance().getProperty("implicitly.wait"));
         WebDriverManager.getInstance(browserName).setup();
 
         switch (browserName) {
@@ -41,6 +42,8 @@ public class BaseTest {
         getDriver().manage().deleteAllCookies();
         getDriver().manage().timeouts()
                 .pageLoadTimeout(Duration.ofSeconds(pageLoadTimeout));
+        getDriver().manage().timeouts()
+                .implicitlyWait(Duration.ofSeconds(implicitlyWait));
 
         String webUrl = PropertyProvider.getInstance().getProperty("web.url");
         getDriver().get(webUrl);

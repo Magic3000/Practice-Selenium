@@ -64,9 +64,7 @@ public class AddCustomerPage {
 
     @Step("Enter customer data in fields while creating")
     public void customerDataInput(String fName, String lName, String postCode) {
-        waitUntilVisible(driverWait, firstNameField);
-        waitUntilVisible(driverWait, lastNameField);
-        waitUntilVisible(driverWait, postCodeField);
+        //waitUntilVisible(driverWait, firstNameField);
 
         firstNameField.sendKeys(fName);
         lastNameField.sendKeys(lName);
@@ -81,11 +79,13 @@ public class AddCustomerPage {
         customerDataInput(fName, lName, postCode);
     }
 
+    @Step("Click add customer button and accept alert that the customer has been successfully added")
     public void addCustomer() {
         clickAddCustomer();
         clickAlert();
     }
 
+    @Step("Click add customer button and check if an error about not being able to add a customer appears")
     public void addEmptyCustomer() {
         clickAddCustomer();
         checkError();

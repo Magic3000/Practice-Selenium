@@ -10,8 +10,7 @@ public class Wait {
     }
 
     public static void waitThenClick(WebDriverWait driverWait, final WebElement webElement) {
-        driverWait.until(ExpectedConditions.elementToBeClickable(webElement));
-        webElement.click();
+        driverWait.until(ExpectedConditions.visibilityOf(webElement)).click();
     }
 
     public static void waitUntilAlertIsPresent(WebDriverWait driverWait) {
