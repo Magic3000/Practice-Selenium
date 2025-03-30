@@ -64,8 +64,6 @@ public class AddCustomerPage {
 
     @Step("Enter customer data in fields while creating")
     public void customerDataInput(String fName, String lName, String postCode) {
-        //waitUntilVisible(driverWait, firstNameField);
-
         firstNameField.sendKeys(fName);
         lastNameField.sendKeys(lName);
         postCodeField.sendKeys(postCode);
