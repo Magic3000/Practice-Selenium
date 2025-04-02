@@ -1,0 +1,33 @@
+name: Run Tests
+
+on: [push, pull_request]  # Запуск при push и PR
+
+jobs:
+  test:
+    runs-on: ubuntu-latest  # Среда выполнения
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+
+      - name: Run Tests
+        run: mvn clean test
+
+      - name: Upload Allure results
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
